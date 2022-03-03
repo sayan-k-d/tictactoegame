@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Square from './Square';
 import { calculateWinner } from './win';
 import History from './History';
+import StateInfo from './StateInfo';
 
 const Board = () => {
   const [history, setHistory] = useState([
@@ -12,9 +13,6 @@ const Board = () => {
   const current = history[currentMove];
   // const [isNextPlayer, setNextPayer] = useState(false);
   const winner = calculateWinner(current.board);
-  const message = winner
-    ? `Winner Is ${winner}`
-    : `Next Player ${current.isNext ? 'O' : 'X'}`;
 
   const squareClkHandler = position => {
     if (current.board[position] || winner) {
@@ -49,12 +47,18 @@ const Board = () => {
   const moveTo = move => {
     setcurrentMove(move);
   };
-
+  // const noMoveLeft = current.board.some(el => {
+  //   el !== null;
+  // });
   return (
     <div>
       <div className="app">
         <h1>TIC TAC TOE</h1>
-        <h2>{message}</h2>
+        <StateInfo
+          winner={winner}
+          current={current}
+          currentMove={currentMove}
+        />
       </div>
       <div className="board">
         <div className="board-row">
