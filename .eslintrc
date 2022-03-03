@@ -12,6 +12,8 @@
     "import/prefer-default-export": [0],
     "react/no-array-index-key": [0],
     "arrow-body-style": "off",
-    "prefer-arrow-callback": "off"
+    "prefer-arrow-callback": "off",
+    "no-unused-vars": "warn",
+    "no-alert": "warn"
   }
 }

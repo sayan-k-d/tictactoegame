@@ -1,34 +1,44 @@
 import React, { useState } from 'react';
 import Square from './Square';
 import { calculateWinner } from './win';
+import History from './History';
+
 const Board = () => {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  console.log(board);
-  const [isNextPlayer, setNextPayer] = useState(false);
-  const winner = calculateWinner(board);
+  const [history, setHistory] = useState([
+    { board: Array(9).fill(null), isNext: false },
+  ]);
+  const [currentMove, setcurrentMove] = useState(0);
+
+  const current = history[currentMove];
+  // const [isNextPlayer, setNextPayer] = useState(false);
+  const winner = calculateWinner(current.board);
   const message = winner
     ? `Winner Is ${winner}`
-    : `Next Player ${isNextPlayer ? 'O' : 'X'}`;
+    : `Next Player ${current.isNext ? 'O' : 'X'}`;
+
   const squareClkHandler = position => {
-    if (board[position] || winner) {
+    if (current.board[position] || winner) {
       return;
     }
 
-    setBoard(prev => {
-      return prev.map((square, pos) => {
+    setHistory(prev => {
+      const lastMove = prev[prev.length - 1];
+
+      const newBoard = lastMove.board.map((square, pos) => {
         if (pos === position) {
-          return isNextPlayer ? 'O' : 'X';
+          return lastMove.isNext ? 'O' : 'X';
         }
         return square;
       });
+      return prev.concat({ board: newBoard, isNext: !lastMove.isNext });
     });
-    setNextPayer(prev => !prev);
+    setcurrentMove(currentMove + 1);
   };
 
   const renderSquare = position => {
     return (
       <Square
-        value={board[position]}
+        value={current.board[position]}
         onClick={() => {
           squareClkHandler(position);
         }}
@@ -36,26 +46,35 @@ const Board = () => {
     );
   };
 
+  const moveTo = move => {
+    setcurrentMove(move);
+  };
+
   return (
-    <div className="board">
+    <div>
       <div className="app">
         <h1>TIC TAC TOE</h1>
         <h2>{message}</h2>
       </div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
+      <div className="board">
+        <div className="board-row">
+          {renderSquare(0)}
+          {renderSquare(1)}
+          {renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {renderSquare(3)}
+          {renderSquare(4)}
+          {renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {renderSquare(6)}
+          {renderSquare(7)}
+          {renderSquare(8)}
+        </div>
       </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
+      <div className="app">
+        <History history={history} moveTo={moveTo} currentMove={currentMove} />
       </div>
     </div>
   );
