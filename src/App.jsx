@@ -6,6 +6,7 @@ const App = () => {
   return (
     <div className="app">
       <Board />
+      <div className="bg-balls" />
     </div>
   );
 };
