@@ -59,9 +59,11 @@ const Board = () => {
     setcurrentMove(0);
   };
   return (
-    <div>
+    <div className="app">
       <div className="app">
-        <h1>TIC TAC TOE</h1>
+        <h1>
+          TIC <span className="text-green">TAC</span> TOE
+        </h1>
         <StateInfo
           winner={winner}
           current={current}
@@ -88,14 +90,11 @@ const Board = () => {
       <div className="app">
         <button
           onClick={newGame}
-          style={{
-            fontWeight: currentMove > 0 ? 'bold' : 'normal',
-            fontSize: 20,
-            marginTop: 30,
-          }}
+          className={`btn-reset ${winner ? 'active' : ''}`}
         >
-          New Game
+          Start New Game
         </button>
+
         <History history={history} moveTo={moveTo} currentMove={currentMove} />
       </div>
     </div>
