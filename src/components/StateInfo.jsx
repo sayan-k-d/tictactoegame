@@ -1,13 +1,19 @@
 import React from 'react';
 
 const StateInfo = ({ winner, current, currentMove }) => {
-  console.log(currentMove);
-  console.log(current.board);
   //const noMoveLeft = current.board.every(el => el !== null);
   return (
     <div>
       <h2>
-        {winner && `Winner Is ${winner}`}
+        <p
+          style={{
+            fontSize: 35,
+            fontFamily: 'Times New Roman',
+            fontWeight: 'bolder',
+          }}
+        >
+          {winner && `Winner Is ${winner}`}
+        </p>
         {!winner &&
           currentMove !== 9 &&
           `Next Player ${current.isNext ? 'O' : 'X'}`}

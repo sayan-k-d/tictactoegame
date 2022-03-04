@@ -4,15 +4,15 @@ import { calculateWinner } from './win';
 import History from './History';
 import StateInfo from './StateInfo';
 
+const newBoard = [{ board: Array(9).fill(null), isNext: false }];
+
 const Board = () => {
-  const [history, setHistory] = useState([
-    { board: Array(9).fill(null), isNext: false },
-  ]);
+  const [history, setHistory] = useState(newBoard);
   const [currentMove, setcurrentMove] = useState(0);
 
   const current = history[currentMove];
   // const [isNextPlayer, setNextPayer] = useState(false);
-  const winner = calculateWinner(current.board);
+  const { winner, winningSquares } = calculateWinner(current.board);
 
   const squareClkHandler = position => {
     if (current.board[position] || winner) {
@@ -34,12 +34,15 @@ const Board = () => {
   };
 
   const renderSquare = position => {
+    const iswinningSquare = winningSquares.includes(position);
+    //console.log(iswinningSquare);
     return (
       <Square
         value={current.board[position]}
         onClick={() => {
           squareClkHandler(position);
         }}
+        iswinningSquare={iswinningSquare}
       />
     );
   };
@@ -50,6 +53,11 @@ const Board = () => {
   // const noMoveLeft = current.board.some(el => {
   //   el !== null;
   // });
+
+  const newGame = () => {
+    setHistory(newBoard);
+    setcurrentMove(0);
+  };
   return (
     <div>
       <div className="app">
@@ -78,6 +86,16 @@ const Board = () => {
         </div>
       </div>
       <div className="app">
+        <button
+          onClick={newGame}
+          style={{
+            fontWeight: currentMove > 0 ? 'bold' : 'normal',
+            fontSize: 20,
+            marginTop: 30,
+          }}
+        >
+          New Game
+        </button>
         <History history={history} moveTo={moveTo} currentMove={currentMove} />
       </div>
     </div>
